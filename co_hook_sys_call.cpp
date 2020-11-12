@@ -740,7 +740,7 @@ void co_set_env_list(const char *name[], size_t cnt) {
   }
 }
 
-int setenv(const char *n, const char *value=nullptr , int overwrite=0) {
+int setenv(const char *n, const char *value, int overwrite) {
   HOOK_SYS_FUNC(setenv)
   if (co_is_enable_sys_hook() && g_co_sysenv.data) {
     stCoRoutine_t *self = co_self();
@@ -759,7 +759,7 @@ int setenv(const char *n, const char *value=nullptr , int overwrite=0) {
         if (overwrite || !e->value) {
           if (e->value)
             free(e->value);
-          e->value = (value ? strdup(value) : 0);
+          e->value = ((value) ? strdup(value) : 0);
         }
         return 0;
       }

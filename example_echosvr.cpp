@@ -18,12 +18,13 @@ available.
 */
 
 #include "co_routine.h"
-
 #include <stack>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <arpa/inet.h>
 #include <errno.h>
@@ -82,11 +83,14 @@ static void *readwrite_routine(void *arg) {
 
       int ret = read(fd, buf, sizeof(buf));
       if (ret > 0) {
+        buf[ret] = '\0';
+        printf("read:%s\n", buf);
         ret = write(fd, buf, ret);
       }
       if (ret > 0 || (-1 == ret && EAGAIN == errno)) {
         continue;
       }
+      printf("ret:%d, close fd:%d, co->fd:%d\n", ret, fd, co->fd);
       close(fd);
       break;
     }
@@ -99,13 +103,12 @@ static void *accept_routine(void *) {
   printf("accept_routine\n");
   fflush(stdout);
   for (;;) {
-    // printf("pid %ld g_readwrite.size %ld\n",getpid(),g_readwrite.size());
+    printf("pid %d g_readwrite.size %ld\n", getpid(), g_readwrite.size());
     if (g_readwrite.empty()) {
       printf("empty\n"); // sleep
       struct pollfd pf = {};
       pf.fd = -1;
       poll(&pf, 1, 1000);
-
       continue;
     }
     struct sockaddr_in addr; // maybe sockaddr_un;
@@ -124,6 +127,7 @@ static void *accept_routine(void *) {
       close(fd);
       continue;
     }
+    printf("accept fd:%d\n", fd);
     SetNonBlock(fd);
     task_t *co = g_readwrite.top();
     co->fd = fd;

@@ -7,7 +7,7 @@
 * you may not use this file except in compliance with the License. 
 * You may obtain a copy of the License at
 *
-*	http://www.apache.org/licenses/LICENSE-2.0
+*    http://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, 
 * software distributed under the License is distributed on an "AS IS" BASIS, 
@@ -21,8 +21,8 @@
 struct stCoClosure_t 
 {
 public:
-	virtual void exec() = 0;
-	virtual ~stCoClosure_t(){}
+    virtual void exec() = 0;
+    virtual ~stCoClosure_t(){}
 };
 
 //1.base 
@@ -66,12 +66,12 @@ repeat( comac_argc(__VA_ARGS__) ,decl_typeof,__VA_ARGS__ )\
 class type_##name\
 {\
 public:\
-	repeat( comac_argc(__VA_ARGS__) ,impl_typeof,__VA_ARGS__ )\
-	int _member_cnt;\
-	type_##name( \
-		repeat( comac_argc(__VA_ARGS__),con_param_typeof,__VA_ARGS__ ) ... ): \
-		repeat( comac_argc(__VA_ARGS__),param_init_typeof,__VA_ARGS__ ) _member_cnt(comac_argc(__VA_ARGS__)) \
-	{}\
+    repeat( comac_argc(__VA_ARGS__) ,impl_typeof,__VA_ARGS__ )\
+    int _member_cnt;\
+    type_##name( \
+        repeat( comac_argc(__VA_ARGS__),con_param_typeof,__VA_ARGS__ ) ... ): \
+        repeat( comac_argc(__VA_ARGS__),param_init_typeof,__VA_ARGS__ ) _member_cnt(comac_argc(__VA_ARGS__)) \
+    {}\
 } name( __VA_ARGS__ ) ;
 
 
@@ -82,13 +82,13 @@ repeat( comac_argc(__VA_ARGS__) ,decl_typeof,__VA_ARGS__ )\
 class name:public stCoClosure_t\
 {\
 public:\
-	repeat( comac_argc(__VA_ARGS__) ,impl_typeof_cpy,__VA_ARGS__ )\
-	int _member_cnt;\
+    repeat( comac_argc(__VA_ARGS__) ,impl_typeof_cpy,__VA_ARGS__ )\
+    int _member_cnt;\
 public:\
-	name( repeat( comac_argc(__VA_ARGS__),con_param_typeof,__VA_ARGS__ ) ... ): \
-		repeat( comac_argc(__VA_ARGS__),param_init_typeof,__VA_ARGS__ ) _member_cnt(comac_argc(__VA_ARGS__))\
-	{}\
-	void exec()
+    name( repeat( comac_argc(__VA_ARGS__),con_param_typeof,__VA_ARGS__ ) ... ): \
+        repeat( comac_argc(__VA_ARGS__),param_init_typeof,__VA_ARGS__ ) _member_cnt(comac_argc(__VA_ARGS__))\
+    {}\
+    void exec()
 
 #define co_func_end }
 
